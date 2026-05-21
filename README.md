@@ -1,6 +1,6 @@
 # speaker-rate
 
-This template should help get you started developing with Vue 3 in Vite.
+Панель оценки заявок на доклад на Vue 3 и Vite.
 
 ## Recommended IDE Setup
 
@@ -45,4 +45,19 @@ npm run build
 
 ```sh
 npm run lint
+```
+
+## Deploy to GitHub Pages
+
+Проект настроен для деплоя в GitHub Pages из репозитория `speaker-rate`.
+
+1. Запушьте код в ветку `main`.
+2. В GitHub откройте `Settings` -> `Pages`.
+3. В `Build and deployment` выберите `Source: GitHub Actions`.
+4. Workflow `Deploy to GitHub Pages` соберет проект и опубликует содержимое `dist`.
+
+Адрес после публикации будет вида:
+
+```txt
+https://<github-username>.github.io/speaker-rate/
 ```
