@@ -5,6 +5,7 @@ export const criteria: Criterion[] = [
     id: 'relevance',
     title: 'Соответствие аудитории',
     description: 'Тема полезна и понятна участникам мероприятия.',
+    defaultWeight: 2,
     scoreDescriptions: [
       'Тема не подходит аудитории.',
       'Тема в целом соответствует аудитории.',
@@ -16,6 +17,7 @@ export const criteria: Criterion[] = [
     id: 'novelty',
     title: 'Новизна и оригинальность',
     description: 'Доклад дает свежий взгляд, опыт или необычный подход.',
+    defaultWeight: 1.25,
     scoreDescriptions: [
       'Новизна не просматривается.',
       'Доклад сочетает знакомую тему с новым углом.',
@@ -27,6 +29,7 @@ export const criteria: Criterion[] = [
     id: 'practicality',
     title: 'Практическая ценность',
     description: 'Слушатели смогут применить идеи, инструменты или выводы.',
+    defaultWeight: 2,
     scoreDescriptions: [
       'Практической пользы не видно.',
       'Слушатели получат несколько полезных выводов.',
@@ -38,6 +41,7 @@ export const criteria: Criterion[] = [
     id: 'structure',
     title: 'Структура заявки',
     description: 'Цель, план и ожидаемый результат сформулированы ясно.',
+    defaultWeight: 1,
     scoreDescriptions: [
       'Структура заявки отсутствует.',
       'Цель и план описаны достаточно понятно.',
@@ -49,6 +53,7 @@ export const criteria: Criterion[] = [
     id: 'speaker',
     title: 'Экспертиза спикера',
     description: 'Опыт автора соответствует заявленной теме доклада.',
+    defaultWeight: 1.25,
     scoreDescriptions: [
       'Экспертиза по теме не подтверждена.',
       'Экспертиза достаточна для заявленной темы.',
@@ -60,6 +65,7 @@ export const criteria: Criterion[] = [
     id: 'trust',
     title: 'Уверенность в спикере',
     description: 'Насколько мы уверены, что спикер подготовится и не подведет.',
+    defaultWeight: 1.5,
     scoreDescriptions: [
       'Спикер уже подводил нас раньше.',
       'Мы ничего не знаем о надежности спикера.',
