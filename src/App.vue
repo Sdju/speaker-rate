@@ -19,7 +19,7 @@ const { copyResults, copyStatus, scores, scoreLabel, totalScore } = useTalkRatin
           <ThemeToggle />
           <div class="total-card" aria-live="polite">
             <span class="total-label">Итог</span>
-            <strong>{{ totalScore.toFixed(1) }}</strong>
+            <strong>{{ totalScore }}</strong>
             <span class="total-scale">из 10</span>
           </div>
         </div>
@@ -37,7 +37,7 @@ const { copyResults, copyStatus, scores, scoreLabel, totalScore } = useTalkRatin
       <footer class="result">
         <div class="result-summary">
           <span>{{ scoreLabel }}</span>
-          <strong>{{ totalScore.toFixed(1) }} из 10</strong>
+          <strong>{{ totalScore }} из 10</strong>
         </div>
         <p>
           Общая оценка рассчитывается как взвешенное среднее: оценка критерия умножается на его вес.

@@ -29,7 +29,7 @@ export const useTalkRating = () => {
       0,
     )
 
-    return Math.round((weightedSum / totalWeight / MAX_CRITERION_SCORE) * 100) / 10
+    return Math.round((weightedSum / totalWeight / MAX_CRITERION_SCORE) * 10)
   })
 
   const scoreLabel = computed(() => {
@@ -56,7 +56,7 @@ export const useTalkRating = () => {
       .join('\n')
 
     return [
-      `Итоговая оценка: ${totalScore.value.toFixed(1)} из 10`,
+      `Итоговая оценка: ${totalScore.value} из 10`,
       `Вердикт: ${scoreLabel.value}`,
       '',
       'Оценки по критериям:',
