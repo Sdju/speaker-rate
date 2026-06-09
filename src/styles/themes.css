@@ -1,39 +1,16 @@
 :root {
   color-scheme: light;
 
+  --color-bg: #f0f2f1;
+  --color-surface: #ffffff;
+  --color-surface-muted: #e8ecea;
+  --color-border: rgba(23, 32, 38, 0.12);
   --color-text: #172026;
-  --color-text-strong: #172026;
   --color-text-muted: #657076;
-  --color-text-subtle: #4e5d62;
-  --color-text-hint: #4f6563;
-
   --color-accent: #2f6f67;
-  --color-accent-hover: #285f58;
-  --color-accent-soft: #214e49;
-  --color-accent-muted: rgba(47, 111, 103, 0.16);
-  --color-accent-border: rgba(47, 111, 103, 0.24);
-
-  --color-body-bg:
-    radial-gradient(circle at top left, rgba(70, 130, 180, 0.2), transparent 32rem),
-    linear-gradient(135deg, #f7f3ec 0%, #edf5f1 44%, #f6f8fb 100%);
-
-  --color-panel-bg: rgba(255, 255, 255, 0.88);
-  --color-panel-border: rgba(23, 32, 38, 0.1);
-  --color-panel-shadow: 0 24px 70px rgba(38, 54, 72, 0.14);
-
-  --color-total-bg: #244c67;
-  --color-total-text: rgba(255, 255, 255, 0.78);
-
-  --color-result-bg: rgba(238, 245, 242, 0.96);
-  --color-result-shadow: 0 16px 36px rgba(38, 54, 72, 0.14);
-  --color-result-border: rgba(47, 111, 103, 0.16);
-
-  --color-divider: rgba(23, 32, 38, 0.09);
-
-  --color-weight-text: #3d3520;
-  --color-weight-bg: #f0eadc;
-
-  --color-slider-accent: #2f6f67;
+  --color-accent-hover: #265a53;
+  --color-on-accent: #ffffff;
+  --shadow: 0 16px 40px rgba(23, 32, 38, 0.1);
 
   --color-score-0-text: #7a1616;
   --color-score-0-bg: #f8d7da;
@@ -44,48 +21,32 @@
   --color-score-3-text: #14532d;
   --color-score-3-bg: #bbf7d0;
 
-  --color-theme-toggle-bg: rgba(248, 250, 249, 0.9);
-  --color-theme-toggle-border: rgba(23, 32, 38, 0.14);
-  --color-theme-toggle-hover-bg: #eef5f2;
-  --color-theme-toggle-hover-border: rgba(47, 111, 103, 0.34);
+  --color-total-0-bg: #7a1616;
+  --color-total-1-bg: #7c1c12;
+  --color-total-2-bg: #7e2410;
+  --color-total-3-bg: #7a3008;
+  --color-total-4-bg: #7a3a00;
+  --color-total-5-bg: #6f4800;
+  --color-total-6-bg: #625600;
+  --color-total-7-bg: #4d5f00;
+  --color-total-8-bg: #3a6620;
+  --color-total-9-bg: #286030;
+  --color-total-10-bg: #14532d;
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --color-text: #e4eaee;
-  --color-text-strong: #f3f6f8;
-  --color-text-muted: #9aa8ae;
-  --color-text-subtle: #8a989e;
-  --color-text-hint: #8fa0a6;
-
+  --color-bg: #141a1e;
+  --color-surface: #1e272d;
+  --color-surface-muted: #283238;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-text: #e8ecef;
+  --color-text-muted: #93a1a8;
   --color-accent: #6ec4b8;
   --color-accent-hover: #5ab3a7;
-  --color-accent-soft: #8ed4ca;
-  --color-accent-muted: rgba(110, 196, 184, 0.14);
-  --color-accent-border: rgba(110, 196, 184, 0.28);
-
-  --color-body-bg:
-    radial-gradient(circle at top left, rgba(47, 111, 103, 0.18), transparent 32rem),
-    linear-gradient(135deg, #141b20 0%, #182026 44%, #12181d 100%);
-
-  --color-panel-bg: rgba(24, 32, 38, 0.92);
-  --color-panel-border: rgba(255, 255, 255, 0.08);
-  --color-panel-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
-
-  --color-total-bg: #356888;
-  --color-total-text: rgba(255, 255, 255, 0.82);
-
-  --color-result-bg: rgba(28, 38, 44, 0.96);
-  --color-result-shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
-  --color-result-border: rgba(110, 196, 184, 0.18);
-
-  --color-divider: rgba(255, 255, 255, 0.08);
-
-  --color-weight-text: #d9cdb0;
-  --color-weight-bg: rgba(122, 107, 63, 0.28);
-
-  --color-slider-accent: #6ec4b8;
+  --color-on-accent: #ffffff;
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
 
   --color-score-0-text: #ffb4b4;
   --color-score-0-bg: rgba(122, 22, 22, 0.38);
@@ -96,10 +57,17 @@
   --color-score-3-text: #8ef0b4;
   --color-score-3-bg: rgba(20, 83, 45, 0.36);
 
-  --color-theme-toggle-bg: rgba(34, 44, 50, 0.92);
-  --color-theme-toggle-border: rgba(255, 255, 255, 0.1);
-  --color-theme-toggle-hover-bg: rgba(47, 62, 70, 0.96);
-  --color-theme-toggle-hover-border: rgba(110, 196, 184, 0.28);
+  --color-total-0-bg: #9b3030;
+  --color-total-1-bg: #9b3828;
+  --color-total-2-bg: #9b4020;
+  --color-total-3-bg: #9b5018;
+  --color-total-4-bg: #9b6018;
+  --color-total-5-bg: #8f7010;
+  --color-total-6-bg: #7a8010;
+  --color-total-7-bg: #6b8018;
+  --color-total-8-bg: #4a7a28;
+  --color-total-9-bg: #327838;
+  --color-total-10-bg: #1a6b3a;
 }
 
 *,
@@ -116,7 +84,7 @@ body {
   margin: 0;
   min-width: 320px;
   color: var(--color-text);
-  background: var(--color-body-bg);
+  background: var(--color-bg);
   font-family:
     Roboto,
     ui-sans-serif,

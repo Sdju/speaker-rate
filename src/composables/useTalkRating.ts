@@ -6,6 +6,20 @@ import type { CriterionId, CriterionScore } from '@/types/rating'
 
 const MAX_CRITERION_SCORE = 3
 
+export const SCORE_LABELS = [
+  'Не подходит',
+  'Критически слабая',
+  'Очень слабая',
+  'Слабое соответствие',
+  'Существенные пробелы',
+  'Нужна доработка',
+  'Есть потенциал',
+  'Перспективная заявка',
+  'Хорошая заявка',
+  'Сильная заявка',
+  'Выдающаяся заявка',
+] as const
+
 const defaultScores: Record<CriterionId, CriterionScore> = {
   audienceValue: 2,
   contentDepth: 2,
@@ -32,26 +46,14 @@ export const useTalkRating = () => {
     return Math.round((weightedSum / totalWeight / MAX_CRITERION_SCORE) * 10)
   })
 
-  const scoreLabel = computed(() => {
-    if (totalScore.value >= 8) return 'Сильная заявка'
-    if (totalScore.value >= 6) return 'Перспективная заявка'
-    if (totalScore.value >= 4) return 'Нужна доработка'
-
-    return 'Слабое соответствие'
-  })
-
-  const getScoreDescription = (criterionId: CriterionId) => {
-    const criterion = criteria.find((item) => item.id === criterionId)
-
-    return criterion?.scoreDescriptions[scores[criterionId]] ?? 'Описание оценки не задано.'
-  }
+  const scoreLabel = computed(() => SCORE_LABELS[totalScore.value] ?? SCORE_LABELS[0])
 
   const resultsText = computed(() => {
     const criteriaResults = criteria
       .map((criterion) => {
         const score = scores[criterion.id]
 
-        return `${criterion.title}: ${score}/${MAX_CRITERION_SCORE}, вес ${criterion.weight}. ${getScoreDescription(criterion.id)}`
+        return `${criterion.title}: ${score}/${MAX_CRITERION_SCORE}.`
       })
       .join('\n')
 

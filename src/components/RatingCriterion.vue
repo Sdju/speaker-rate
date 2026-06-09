@@ -52,7 +52,7 @@ const scoreToneClass = computed(() => `score-value--${score.value}`)
   gap: 22px;
   align-items: start;
   padding: 12px 0;
-  border-bottom: 1px solid var(--color-divider);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .criterion-copy {
@@ -67,7 +67,7 @@ const scoreToneClass = computed(() => `score-value--${score.value}`)
 }
 
 .criterion-title {
-  color: var(--color-text-strong);
+  color: var(--color-text);
   font-size: 1rem;
   font-weight: 700;
 }
@@ -78,8 +78,8 @@ const scoreToneClass = computed(() => `score-value--${score.value}`)
   min-height: 24px;
   padding: 0 6px;
   border-radius: 6px;
-  color: var(--color-weight-text);
-  background: var(--color-weight-bg);
+  color: var(--color-text-muted);
+  background: var(--color-surface-muted);
   font-size: 0.78rem;
   font-weight: 700;
   place-items: center;
@@ -104,7 +104,7 @@ const scoreToneClass = computed(() => `score-value--${score.value}`)
 
 .score-slider {
   width: 100%;
-  accent-color: var(--color-slider-accent);
+  accent-color: var(--color-accent);
 }
 
 .score-value {
@@ -139,7 +139,7 @@ const scoreToneClass = computed(() => `score-value--${score.value}`)
 .score-hint {
   display: block;
   min-height: 3lh;
-  color: var(--color-text-hint);
+  color: var(--color-text-muted);
   font-size: 0.94rem;
   line-height: 1.35;
 }

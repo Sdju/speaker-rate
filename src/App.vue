@@ -17,7 +17,11 @@ const { copyResults, copyStatus, scores, scoreLabel, totalScore } = useTalkRatin
         </div>
         <div class="panel-actions">
           <ThemeToggle />
-          <div class="total-card" aria-live="polite">
+          <div
+            class="total-card"
+            :style="{ background: `var(--color-total-${totalScore}-bg)` }"
+            aria-live="polite"
+          >
             <span class="total-label">Итог</span>
             <strong>{{ totalScore }}</strong>
             <span class="total-scale">из 10</span>
@@ -62,10 +66,10 @@ const { copyResults, copyStatus, scores, scoreLabel, totalScore } = useTalkRatin
 .rating-panel {
   width: min(960px, 100%);
   padding: 32px;
-  border: 1px solid var(--color-panel-border);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: var(--color-panel-bg);
-  box-shadow: var(--color-panel-shadow);
+  background: var(--color-surface);
+  box-shadow: var(--shadow);
 }
 
 .panel-header {
@@ -74,7 +78,7 @@ const { copyResults, copyStatus, scores, scoreLabel, totalScore } = useTalkRatin
   align-items: flex-start;
   justify-content: space-between;
   padding-bottom: 28px;
-  border-bottom: 1px solid var(--color-panel-border);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .panel-actions {
@@ -95,7 +99,7 @@ const { copyResults, copyStatus, scores, scoreLabel, totalScore } = useTalkRatin
 h1 {
   max-width: 620px;
   margin: 0;
-  color: var(--color-text-strong);
+  color: var(--color-text);
   font-size: clamp(2rem, 4vw, 3.6rem);
   line-height: 1;
 }
@@ -105,14 +109,14 @@ h1 {
   min-width: 148px;
   padding: 18px;
   border-radius: 8px;
-  color: #fff;
-  background: var(--color-total-bg);
+  color: var(--color-on-accent);
   place-items: center;
+  transition: background-color 0.2s ease;
 }
 
 .total-label,
 .total-scale {
-  color: var(--color-total-text);
+  color: color-mix(in srgb, var(--color-on-accent) 78%, transparent);
   font-size: 0.82rem;
   font-weight: 700;
 }
@@ -138,10 +142,10 @@ h1 {
   justify-content: space-between;
   margin-top: 28px;
   padding: 18px 20px;
-  border: 1px solid var(--color-result-border);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: var(--color-result-bg);
-  box-shadow: var(--color-result-shadow);
+  background: var(--color-surface-muted);
+  box-shadow: var(--shadow);
   backdrop-filter: blur(12px);
 }
 
@@ -151,13 +155,13 @@ h1 {
 }
 
 .result-summary span {
-  color: var(--color-accent-soft);
+  color: var(--color-accent);
   font-size: 1.08rem;
   font-weight: 700;
 }
 
 .result-summary strong {
-  color: var(--color-text-strong);
+  color: var(--color-text);
   font-size: 1.35rem;
   line-height: 1;
 }
@@ -165,7 +169,7 @@ h1 {
 .result p {
   max-width: 520px;
   margin: 0;
-  color: var(--color-text-subtle);
+  color: var(--color-text-muted);
   line-height: 1.45;
 }
 
@@ -178,9 +182,9 @@ h1 {
 .copy-button {
   min-height: 44px;
   padding: 0 16px;
-  border: 1px solid var(--color-accent-border);
+  border: 1px solid var(--color-accent);
   border-radius: 8px;
-  color: #fff;
+  color: var(--color-on-accent);
   background: var(--color-accent);
   cursor: pointer;
   font-weight: 700;

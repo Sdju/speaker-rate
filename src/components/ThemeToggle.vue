@@ -21,10 +21,10 @@ const { isDark, toggleTheme } = useTheme()
   display: grid;
   width: 44px;
   min-height: 44px;
-  border: 1px solid var(--color-theme-toggle-border);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   color: var(--color-text);
-  background: var(--color-theme-toggle-bg);
+  background: var(--color-surface);
   cursor: pointer;
   font-size: 1.05rem;
   line-height: 1;
@@ -32,7 +32,6 @@ const { isDark, toggleTheme } = useTheme()
 }
 
 .theme-toggle:hover {
-  border-color: var(--color-theme-toggle-hover-border);
-  background: var(--color-theme-toggle-hover-bg);
+  background: var(--color-surface-muted);
 }
 </style>
