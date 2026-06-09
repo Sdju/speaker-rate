@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import RatingCriterion from '@/components/RatingCriterion.vue'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 import { useTalkRating } from '@/composables/useTalkRating'
 import { criteria } from '@/config/ratingCriteria'
 
-const { copyResults, copyStatus, scores, scoreLabel, totalScore, weights } = useTalkRating()
+const { copyResults, copyStatus, scores, scoreLabel, totalScore } = useTalkRating()
 </script>
 
 <template>
@@ -14,10 +15,13 @@ const { copyResults, copyStatus, scores, scoreLabel, totalScore, weights } = use
           <p class="eyebrow">Оценка заявки</p>
           <h1 id="rating-title">Панель оценки доклада</h1>
         </div>
-        <div class="total-card" aria-live="polite">
-          <span class="total-label">Итог</span>
-          <strong>{{ totalScore.toFixed(1) }}</strong>
-          <span class="total-scale">из 10</span>
+        <div class="panel-actions">
+          <ThemeToggle />
+          <div class="total-card" aria-live="polite">
+            <span class="total-label">Итог</span>
+            <strong>{{ totalScore.toFixed(1) }}</strong>
+            <span class="total-scale">из 10</span>
+          </div>
         </div>
       </div>
 
@@ -26,7 +30,6 @@ const { copyResults, copyStatus, scores, scoreLabel, totalScore, weights } = use
           v-for="criterion in criteria"
           :key="criterion.id"
           v-model="scores[criterion.id]"
-          v-model:weight="weights[criterion.id]"
           :criterion="criterion"
         />
       </div>
@@ -49,32 +52,6 @@ const { copyResults, copyStatus, scores, scoreLabel, totalScore, weights } = use
 </template>
 
 <style scoped>
-:global(*) {
-  box-sizing: border-box;
-}
-
-:global(body) {
-  margin: 0;
-  min-width: 320px;
-  color: #172026;
-  background:
-    radial-gradient(circle at top left, rgba(70, 130, 180, 0.2), transparent 32rem),
-    linear-gradient(135deg, #f7f3ec 0%, #edf5f1 44%, #f6f8fb 100%);
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
-}
-
-button,
-input {
-  font: inherit;
-}
-
 .page-shell {
   display: grid;
   min-height: 100vh;
@@ -85,10 +62,10 @@ input {
 .rating-panel {
   width: min(960px, 100%);
   padding: 32px;
-  border: 1px solid rgba(23, 32, 38, 0.1);
+  border: 1px solid var(--color-panel-border);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 24px 70px rgba(38, 54, 72, 0.14);
+  background: var(--color-panel-bg);
+  box-shadow: var(--color-panel-shadow);
 }
 
 .panel-header {
@@ -97,14 +74,20 @@ input {
   align-items: flex-start;
   justify-content: space-between;
   padding-bottom: 28px;
-  border-bottom: 1px solid rgba(23, 32, 38, 0.1);
+  border-bottom: 1px solid var(--color-panel-border);
+}
+
+.panel-actions {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
 }
 
 .eyebrow {
   margin: 0 0 8px;
-  color: #2f6f67;
+  color: var(--color-accent);
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -112,6 +95,7 @@ input {
 h1 {
   max-width: 620px;
   margin: 0;
+  color: var(--color-text-strong);
   font-size: clamp(2rem, 4vw, 3.6rem);
   line-height: 1;
 }
@@ -122,13 +106,13 @@ h1 {
   padding: 18px;
   border-radius: 8px;
   color: #fff;
-  background: #244c67;
+  background: var(--color-total-bg);
   place-items: center;
 }
 
 .total-label,
 .total-scale {
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--color-total-text);
   font-size: 0.82rem;
   font-weight: 700;
 }
@@ -154,10 +138,10 @@ h1 {
   justify-content: space-between;
   margin-top: 28px;
   padding: 18px 20px;
-  border: 1px solid rgba(47, 111, 103, 0.16);
+  border: 1px solid var(--color-result-border);
   border-radius: 8px;
-  background: rgba(238, 245, 242, 0.96);
-  box-shadow: 0 16px 36px rgba(38, 54, 72, 0.14);
+  background: var(--color-result-bg);
+  box-shadow: var(--color-result-shadow);
   backdrop-filter: blur(12px);
 }
 
@@ -167,13 +151,13 @@ h1 {
 }
 
 .result-summary span {
-  color: #214e49;
+  color: var(--color-accent-soft);
   font-size: 1.08rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .result-summary strong {
-  color: #172026;
+  color: var(--color-text-strong);
   font-size: 1.35rem;
   line-height: 1;
 }
@@ -181,7 +165,7 @@ h1 {
 .result p {
   max-width: 520px;
   margin: 0;
-  color: #4e5d62;
+  color: var(--color-text-subtle);
   line-height: 1.45;
 }
 
@@ -194,23 +178,23 @@ h1 {
 .copy-button {
   min-height: 44px;
   padding: 0 16px;
-  border: 1px solid rgba(47, 111, 103, 0.24);
+  border: 1px solid var(--color-accent-border);
   border-radius: 8px;
   color: #fff;
-  background: #2f6f67;
+  background: var(--color-accent);
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .copy-button:hover {
-  background: #285f58;
+  background: var(--color-accent-hover);
 }
 
 .copy-results span {
   min-height: 1.2em;
-  color: #2f6f67;
+  color: var(--color-accent);
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 @media (max-width: 720px) {
@@ -228,8 +212,13 @@ h1 {
     align-items: stretch;
   }
 
-  .total-card {
+  .panel-actions {
     width: 100%;
+    justify-content: space-between;
+  }
+
+  .total-card {
+    flex: 1;
   }
 
   .copy-results {

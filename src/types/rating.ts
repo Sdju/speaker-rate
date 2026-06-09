@@ -1,10 +1,9 @@
 export type CriterionId =
-  | 'relevance'
-  | 'novelty'
-  | 'practicality'
-  | 'structure'
-  | 'speaker'
-  | 'trust'
+  | 'audienceValue'
+  | 'contentDepth'
+  | 'uniqueness'
+  | 'speakerConfidence'
+  | 'applicationQuality'
 
 export type CriterionScore = 0 | 1 | 2 | 3
 
@@ -14,6 +13,6 @@ export type Criterion = {
   id: CriterionId
   title: string
   description: string
-  defaultWeight: number
+  weight: number
   scoreDescriptions: CriterionScoreDescriptions
 }

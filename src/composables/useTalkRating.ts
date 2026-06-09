@@ -1,46 +1,31 @@
-import { useClipboard, useStorage } from '@vueuse/core'
+import { useClipboard } from '@vueuse/core'
 import { computed, reactive, ref } from 'vue'
 
 import { criteria } from '@/config/ratingCriteria'
 import type { CriterionId, CriterionScore } from '@/types/rating'
 
 const MAX_CRITERION_SCORE = 3
-const WEIGHTS_STORAGE_KEY = 'speaker-rate:criterion-weights'
 
 const defaultScores: Record<CriterionId, CriterionScore> = {
-  relevance: 2,
-  novelty: 2,
-  practicality: 2,
-  structure: 2,
-  speaker: 2,
-  trust: 2,
+  audienceValue: 2,
+  contentDepth: 2,
+  uniqueness: 2,
+  speakerConfidence: 2,
+  applicationQuality: 2,
 }
 
-const defaultWeights = Object.fromEntries(
-  criteria.map((criterion) => [criterion.id, criterion.defaultWeight]),
-) as Record<CriterionId, number>
+const totalWeight = criteria.reduce((total, criterion) => total + criterion.weight, 0)
 
 export const useTalkRating = () => {
   const copyError = ref(false)
 
   const scores = reactive<Record<CriterionId, CriterionScore>>({ ...defaultScores })
 
-  const weights = useStorage<Record<CriterionId, number>>(
-    WEIGHTS_STORAGE_KEY,
-    defaultWeights,
-    localStorage,
-    {
-      mergeDefaults: true,
-    },
-  )
-
   const totalScore = computed(() => {
-    const totalWeight = criteria.reduce((total, criterion) => total + weights.value[criterion.id], 0)
-
     if (totalWeight === 0) return 0
 
     const weightedSum = criteria.reduce(
-      (total, criterion) => total + scores[criterion.id] * weights.value[criterion.id],
+      (total, criterion) => total + scores[criterion.id] * criterion.weight,
       0,
     )
 
@@ -65,9 +50,8 @@ export const useTalkRating = () => {
     const criteriaResults = criteria
       .map((criterion) => {
         const score = scores[criterion.id]
-        const weight = weights.value[criterion.id].toFixed(1)
 
-        return `${criterion.title}: ${score}/${MAX_CRITERION_SCORE}, вес ${weight}. ${getScoreDescription(criterion.id)}`
+        return `${criterion.title}: ${score}/${MAX_CRITERION_SCORE}, вес ${criterion.weight}. ${getScoreDescription(criterion.id)}`
       })
       .join('\n')
 
@@ -110,6 +94,5 @@ export const useTalkRating = () => {
     scores,
     scoreLabel,
     totalScore,
-    weights,
   }
 }

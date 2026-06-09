@@ -1,0 +1,133 @@
+:root {
+  color-scheme: light;
+
+  --color-text: #172026;
+  --color-text-strong: #172026;
+  --color-text-muted: #657076;
+  --color-text-subtle: #4e5d62;
+  --color-text-hint: #4f6563;
+
+  --color-accent: #2f6f67;
+  --color-accent-hover: #285f58;
+  --color-accent-soft: #214e49;
+  --color-accent-muted: rgba(47, 111, 103, 0.16);
+  --color-accent-border: rgba(47, 111, 103, 0.24);
+
+  --color-body-bg:
+    radial-gradient(circle at top left, rgba(70, 130, 180, 0.2), transparent 32rem),
+    linear-gradient(135deg, #f7f3ec 0%, #edf5f1 44%, #f6f8fb 100%);
+
+  --color-panel-bg: rgba(255, 255, 255, 0.88);
+  --color-panel-border: rgba(23, 32, 38, 0.1);
+  --color-panel-shadow: 0 24px 70px rgba(38, 54, 72, 0.14);
+
+  --color-total-bg: #244c67;
+  --color-total-text: rgba(255, 255, 255, 0.78);
+
+  --color-result-bg: rgba(238, 245, 242, 0.96);
+  --color-result-shadow: 0 16px 36px rgba(38, 54, 72, 0.14);
+  --color-result-border: rgba(47, 111, 103, 0.16);
+
+  --color-divider: rgba(23, 32, 38, 0.09);
+
+  --color-weight-text: #3d3520;
+  --color-weight-bg: #f0eadc;
+
+  --color-slider-accent: #2f6f67;
+
+  --color-score-0-text: #7a1616;
+  --color-score-0-bg: #f8d7da;
+  --color-score-1-text: #7a3a00;
+  --color-score-1-bg: #ffe0b2;
+  --color-score-2-text: #4d5f00;
+  --color-score-2-bg: #e7f5a4;
+  --color-score-3-text: #14532d;
+  --color-score-3-bg: #bbf7d0;
+
+  --color-theme-toggle-bg: rgba(248, 250, 249, 0.9);
+  --color-theme-toggle-border: rgba(23, 32, 38, 0.14);
+  --color-theme-toggle-hover-bg: #eef5f2;
+  --color-theme-toggle-hover-border: rgba(47, 111, 103, 0.34);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-text: #e4eaee;
+  --color-text-strong: #f3f6f8;
+  --color-text-muted: #9aa8ae;
+  --color-text-subtle: #8a989e;
+  --color-text-hint: #8fa0a6;
+
+  --color-accent: #6ec4b8;
+  --color-accent-hover: #5ab3a7;
+  --color-accent-soft: #8ed4ca;
+  --color-accent-muted: rgba(110, 196, 184, 0.14);
+  --color-accent-border: rgba(110, 196, 184, 0.28);
+
+  --color-body-bg:
+    radial-gradient(circle at top left, rgba(47, 111, 103, 0.18), transparent 32rem),
+    linear-gradient(135deg, #141b20 0%, #182026 44%, #12181d 100%);
+
+  --color-panel-bg: rgba(24, 32, 38, 0.92);
+  --color-panel-border: rgba(255, 255, 255, 0.08);
+  --color-panel-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+
+  --color-total-bg: #356888;
+  --color-total-text: rgba(255, 255, 255, 0.82);
+
+  --color-result-bg: rgba(28, 38, 44, 0.96);
+  --color-result-shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
+  --color-result-border: rgba(110, 196, 184, 0.18);
+
+  --color-divider: rgba(255, 255, 255, 0.08);
+
+  --color-weight-text: #d9cdb0;
+  --color-weight-bg: rgba(122, 107, 63, 0.28);
+
+  --color-slider-accent: #6ec4b8;
+
+  --color-score-0-text: #ffb4b4;
+  --color-score-0-bg: rgba(122, 22, 22, 0.38);
+  --color-score-1-text: #ffc98a;
+  --color-score-1-bg: rgba(122, 58, 0, 0.34);
+  --color-score-2-text: #d8eb7a;
+  --color-score-2-bg: rgba(77, 95, 0, 0.32);
+  --color-score-3-text: #8ef0b4;
+  --color-score-3-bg: rgba(20, 83, 45, 0.36);
+
+  --color-theme-toggle-bg: rgba(34, 44, 50, 0.92);
+  --color-theme-toggle-border: rgba(255, 255, 255, 0.1);
+  --color-theme-toggle-hover-bg: rgba(47, 62, 70, 0.96);
+  --color-theme-toggle-hover-border: rgba(110, 196, 184, 0.28);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--color-text);
+  background: var(--color-body-bg);
+  font-family:
+    Roboto,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
