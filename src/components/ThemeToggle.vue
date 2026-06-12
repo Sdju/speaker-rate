@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import { useTheme } from '@/composables/useTheme'
 
+withDefaults(
+  defineProps<{
+    compact?: boolean
+  }>(),
+  {
+    compact: true,
+  },
+)
+
 const { isDark, toggleTheme } = useTheme()
 </script>
 
@@ -8,7 +17,7 @@ const { isDark, toggleTheme } = useTheme()
   <button
     :aria-label="isDark ? 'Включить светлую тему' : 'Включить тёмную тему'"
     :title="isDark ? 'Светлая тема' : 'Тёмная тема'"
-    class="theme-toggle"
+    :class="['theme-toggle', { 'theme-toggle--compact': compact }]"
     type="button"
     @click="toggleTheme"
   >
@@ -33,5 +42,11 @@ const { isDark, toggleTheme } = useTheme()
 
 .theme-toggle:hover {
   background: var(--color-surface-muted);
+}
+
+.theme-toggle--compact {
+  width: 28px;
+  min-height: 28px;
+  font-size: 0.85rem;
 }
 </style>
