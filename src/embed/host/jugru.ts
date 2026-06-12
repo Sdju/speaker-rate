@@ -3,6 +3,7 @@ import type { EmbedSyncMessage } from '@/embed/protocol'
 export const JUGRU_RATING_GROUP_SELECTOR = '[aria-label="Оценка"]' as const
 export const JUGRU_VOTE_COMMENT_SELECTOR = 'textarea[name="voteComment"]' as const
 
+const TAG = '[speaker-rate:host]'
 const MIN_SCORE = 1
 const MAX_SCORE = 10
 
@@ -71,33 +72,63 @@ export const getJugruRatingScore = (group: Element) => {
 }
 
 export const setJugruRatingScore = (score: number, anchor?: Element | null) => {
-  if (!Number.isInteger(score) || score < MIN_SCORE || score > MAX_SCORE) return false
+  if (!Number.isInteger(score) || score < MIN_SCORE || score > MAX_SCORE) {
+    console.warn(TAG, 'оценка вне диапазона', score)
+    return false
+  }
 
   const group = findJugruRatingGroup(anchor)
-  if (!group) return false
+  if (!group) {
+    console.warn(TAG, 'группа оценки не найдена', JUGRU_RATING_GROUP_SELECTOR)
+    return false
+  }
 
-  if (getJugruRatingScore(group) === score) return true
+  if (getJugruRatingScore(group) === score) {
+    console.log(TAG, 'оценка уже выставлена', score)
+    return true
+  }
 
   const entry = getRatingButtons(group).find((item) => item.score === score)
-  if (!entry) return false
+  if (!entry) {
+    console.warn(TAG, 'кнопка оценки не найдена', score)
+    return false
+  }
 
   reactClick(entry.button)
+  console.log(TAG, 'клик по оценке', score)
   return true
 }
 
 export const setJugruVoteComment = (comment: string, anchor?: Element | null) => {
   const textarea = findJugruVoteComment(anchor ?? findJugruRatingGroup())
-  if (!textarea) return false
-  if (textarea.value === comment) return true
+  if (!textarea) {
+    console.warn(TAG, 'voteComment не найден', JUGRU_VOTE_COMMENT_SELECTOR)
+    return false
+  }
+
+  if (textarea.value === comment) {
+    console.log(TAG, 'комментарий без изменений')
+    return true
+  }
 
   setReactFieldValue(textarea, comment)
+  console.log(TAG, 'комментарий обновлён', { length: comment.length })
   return true
 }
 
 export const applyJugruHostSync = (payload: Pick<EmbedSyncMessage, 'totalScore' | 'comment'>) => {
-  if (payload.totalScore >= MIN_SCORE && payload.totalScore <= MAX_SCORE) {
-    setJugruRatingScore(payload.totalScore)
-  }
+  const ratingOk =
+    payload.totalScore >= MIN_SCORE && payload.totalScore <= MAX_SCORE
+      ? setJugruRatingScore(payload.totalScore)
+      : false
 
-  setJugruVoteComment(payload.comment)
+  const commentOk = setJugruVoteComment(payload.comment)
+
+  console.log(TAG, 'applyHostSync', {
+    totalScore: payload.totalScore,
+    ratingOk,
+    commentOk,
+    hasRatingGroup: Boolean(findJugruRatingGroup()),
+    hasVoteComment: Boolean(findJugruVoteComment()),
+  })
 }

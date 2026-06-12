@@ -28,6 +28,12 @@ export const useWidgetBridge = (options: WidgetBridgeOptions) => {
         scoreLabel: unref(options.scoreLabel),
       }
 
+      console.log('[speaker-rate:widget]', 'postMessage → parent', {
+        totalScore: message.totalScore,
+        scoreLabel: message.scoreLabel,
+        commentLength: message.comment.length,
+      })
+
       window.parent.postMessage(message, '*')
     },
     { immediate: true },
