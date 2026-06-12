@@ -1,19 +1,33 @@
 <script setup lang="ts">
+import { toRef } from 'vue'
+
 import RatingCriterion from '@/components/RatingCriterion.vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
+import { useWidgetBridge } from '@/embed/useWidgetBridge'
 import { useTalkRating } from '@/composables/useTalkRating'
 import { criteria } from '@/config/ratingCriteria'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     compact?: boolean
+    embed?: boolean
   }>(),
   {
     compact: true,
+    embed: false,
   },
 )
 
-const { copyResults, copyStatus, scores, scoreLabel, totalScore } = useTalkRating()
+const { copyResults, copyStatus, scores, scoreLabel, totalScore, resultsText } = useTalkRating({
+  embed: props.embed,
+})
+
+useWidgetBridge({
+  enabled: toRef(props, 'embed'),
+  totalScore,
+  resultsText,
+  scoreLabel,
+})
 </script>
 
 <template>
@@ -52,7 +66,7 @@ const { copyResults, copyStatus, scores, scoreLabel, totalScore } = useTalkRatin
       />
     </div>
 
-    <footer class="result">
+    <footer v-if="!embed" class="result">
       <template v-if="compact">
         <button class="copy-button" type="button" @click="copyResults">Копировать</button>
         <span aria-live="polite">{{ copyStatus }}</span>

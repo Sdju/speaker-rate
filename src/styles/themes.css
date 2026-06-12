@@ -99,3 +99,7 @@ button,
 input {
   font: inherit;
 }
+
+html[data-embed='true'] body {
+  background: transparent;
+}

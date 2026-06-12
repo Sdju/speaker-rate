@@ -30,7 +30,30 @@ const defaultScores: Record<CriterionId, CriterionScore> = {
 
 const totalWeight = criteria.reduce((total, criterion) => total + criterion.weight, 0)
 
-export const useTalkRating = () => {
+export const formatResultsText = (
+  scores: Record<CriterionId, CriterionScore>,
+  totalScore: number,
+  scoreLabel: string,
+) => {
+  const criteriaResults = criteria
+    .map((criterion) => {
+      const score = scores[criterion.id]
+
+      return `${criterion.title}: ${score}/${MAX_CRITERION_SCORE}.`
+    })
+    .join('\n')
+
+  return [
+    `Итоговая оценка: ${totalScore} из 10`,
+    `Вердикт: ${scoreLabel}`,
+    '',
+    'Оценки по критериям:',
+    criteriaResults,
+  ].join('\n')
+}
+
+export const useTalkRating = (options?: { embed?: boolean }) => {
+  const embed = options?.embed ?? false
   const copyError = ref(false)
 
   const scores = reactive<Record<CriterionId, CriterionScore>>({ ...defaultScores })
@@ -48,23 +71,9 @@ export const useTalkRating = () => {
 
   const scoreLabel = computed(() => SCORE_LABELS[totalScore.value] ?? SCORE_LABELS[0])
 
-  const resultsText = computed(() => {
-    const criteriaResults = criteria
-      .map((criterion) => {
-        const score = scores[criterion.id]
-
-        return `${criterion.title}: ${score}/${MAX_CRITERION_SCORE}.`
-      })
-      .join('\n')
-
-    return [
-      `Итоговая оценка: ${totalScore.value} из 10`,
-      `Вердикт: ${scoreLabel.value}`,
-      '',
-      'Оценки по критериям:',
-      criteriaResults,
-    ].join('\n')
-  })
+  const resultsText = computed(() =>
+    formatResultsText(scores, totalScore.value, scoreLabel.value),
+  )
 
   const { copy, copied, isSupported: isClipboardSupported } = useClipboard({
     source: resultsText,
@@ -91,8 +100,9 @@ export const useTalkRating = () => {
   }
 
   return {
-    copyResults,
-    copyStatus,
+    copyResults: embed ? undefined : copyResults,
+    copyStatus: embed ? undefined : copyStatus,
+    resultsText,
     scores,
     scoreLabel,
     totalScore,
