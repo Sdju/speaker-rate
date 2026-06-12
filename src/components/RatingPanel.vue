@@ -33,7 +33,10 @@ useWidgetBridge({
 <template>
   <section
     class="rating-panel"
-    :class="{ 'rating-panel--compact': compact }"
+    :class="{
+      'rating-panel--compact': compact,
+      'rating-panel--embed': embed,
+    }"
     aria-labelledby="rating-title"
   >
     <header class="panel-header">
@@ -107,6 +110,12 @@ useWidgetBridge({
   padding: 12px;
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(23, 32, 38, 0.12);
+}
+
+.rating-panel--compact.rating-panel--embed {
+  width: 100%;
+  max-width: none;
+  box-shadow: none;
 }
 
 .panel-header {

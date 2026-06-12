@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Speaker Rate — JugRu
 // @namespace    https://github.com/Sdju/speaker-rate
-// @version      2.1.0
+// @version      2.3.0
 // @description  Минимальный загрузчик Speaker Rate на beta.jugru.org. Логика — на GitHub Pages.
 // @author       Sdju
 // @match        *://beta.jugru.org/*
@@ -14,18 +14,15 @@
 
   const TAG = '[speaker-rate:loader]'
   const log = (...args) => console.log(TAG, ...args)
-  const warn = (...args) => console.warn(TAG, ...args)
   const error = (...args) => console.error(TAG, ...args)
 
-  /** Стабильная точка входа: меняется только при смене хостинга. */
   const PANEL_ORIGIN = 'https://sdju.github.io'
   const PANEL_BASE = '/speaker-rate/'
 
   const HOST_ATTR = 'data-speaker-rate-host'
-  const SHELL_ID = 'speaker-rate-shell'
-  const LAUNCHER_ID = 'speaker-rate-launcher'
+  const DOCK_ATTR = 'data-speaker-rate-dock'
   const FRAME_ID = 'speaker-rate-frame'
-  const HOTKEY = { alt: true, shift: true, code: 'KeyR' }
+  const RATING_SELECTOR = '[aria-label="Оценка"]'
 
   log('инициализация', { href: location.href, readyState: document.readyState })
 
@@ -34,6 +31,16 @@
     url.searchParams.set('embed', '1')
     url.searchParams.set('_', String(Date.now()))
     return url.href
+  }
+
+  const isOwnElement = (node) => {
+    if (!(node instanceof Element)) return false
+
+    return Boolean(
+      node.closest(`[${DOCK_ATTR}]`) ||
+        node.id === FRAME_ID ||
+        node.hasAttribute(DOCK_ATTR),
+    )
   }
 
   const loadHostBridge = () => {
@@ -50,10 +57,7 @@
     script.src = src
 
     script.addEventListener('load', () => {
-      log('host.js загружен', {
-        src,
-        bridge: window.__speakerRateHostBridge === true,
-      })
+      log('host.js загружен', { src, bridge: window.__speakerRateHostBridge === true })
     })
 
     script.addEventListener('error', (event) => {
@@ -64,129 +68,144 @@
     document.head.append(script)
   }
 
-  const isEditableTarget = (target) => {
-    if (!(target instanceof Element)) return false
-    if (target.closest('[contenteditable=""], [contenteditable="true"]')) return true
-    if (target.closest('[role="textbox"], [role="combobox"], [role="searchbox"]')) return true
-    if (target.closest('.ProseMirror, .tiptap, .lexical-editor, [data-slate-editor]')) return true
-
-    const tag = target.tagName
-    return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT'
+  const isPanelDocked = (target) => {
+    const dock = target.previousElementSibling
+    return (
+      dock instanceof HTMLElement &&
+      dock.hasAttribute(DOCK_ATTR) &&
+      dock.querySelector(`#${FRAME_ID}`) instanceof HTMLIFrameElement
+    )
   }
 
-  const mountShell = () => {
-    if (document.getElementById(SHELL_ID)) {
-      log('оболочка уже смонтирована')
+  const mountInlinePanel = (target) => {
+    if (!(target instanceof Element)) return
+    if (isPanelDocked(target)) return
+
+    let dock = target.previousElementSibling
+    if (!(dock instanceof HTMLElement) || !dock.hasAttribute(DOCK_ATTR)) {
+      dock = document.createElement('div')
+      dock.setAttribute(DOCK_ATTR, '')
+      dock.style.cssText = 'box-sizing: border-box; width: 100%; margin: 0 0 16px;'
+      target.insertAdjacentElement('beforebegin', dock)
+      log('dock вставлен над формой оценки')
+    }
+
+    let frame = dock.querySelector(`#${FRAME_ID}`)
+    if (!(frame instanceof HTMLIFrameElement)) {
+      frame = document.createElement('iframe')
+      frame.id = FRAME_ID
+      frame.title = 'Speaker Rate'
+      frame.style.cssText =
+        'display: block; box-sizing: border-box; width: 100%; height: 520px; ' +
+        'border: 0; border-radius: 10px; background: transparent; ' +
+        'box-shadow: 0 8px 24px rgba(23, 32, 38, 0.12);'
+
+      frame.addEventListener('load', () => {
+        if (!frame.src) return
+        log('iframe load', { src: frame.src })
+      })
+
+      dock.append(frame)
+    }
+
+    if (!frame.src) {
+      const url = panelUrl()
+      log('загружаю панель', url)
+      frame.src = url
+    }
+  }
+
+  const scanForRatingForm = (root) => {
+    if (!(root instanceof Node)) return
+
+    const check = (element) => {
+      if (!(element instanceof Element)) return
+      if (!element.matches(RATING_SELECTOR)) return
+      mountInlinePanel(element)
+    }
+
+    if (root instanceof Document || root instanceof DocumentFragment) {
+      root.querySelectorAll(RATING_SELECTOR).forEach(check)
       return
     }
 
-    log('монтирую ★ и iframe-оболочку')
+    if (root instanceof Element) {
+      if (isOwnElement(root)) return
+      check(root)
+      root.querySelectorAll(RATING_SELECTOR).forEach(check)
+    }
+  }
 
-    const launcher = document.createElement('button')
-    launcher.id = LAUNCHER_ID
-    launcher.type = 'button'
-    launcher.title = 'Оценка доклада (Alt+Shift+R)'
-    launcher.textContent = '★'
-    launcher.style.cssText =
-      'position: fixed; right: 16px; bottom: 16px; z-index: 2147483647; ' +
-      'display: grid; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 999px; ' +
-      'color: #fff; background: #2f6f67; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); ' +
-      'cursor: pointer; font: 700 18px/1 Roboto, system-ui, sans-serif; place-items: center;'
+  const watchRatingForm = () => {
+    scanForRatingForm(document)
 
-    const shell = document.createElement('div')
-    shell.id = SHELL_ID
-    shell.hidden = true
-    shell.style.cssText = 'position: fixed; inset: 0; z-index: 2147483646;'
-
-    const backdrop = document.createElement('button')
-    backdrop.type = 'button'
-    backdrop.setAttribute('aria-label', 'Закрыть панель оценки')
-    backdrop.style.cssText =
-      'position: fixed; inset: 0; padding: 0; border: 0; ' +
-      'background: rgba(0, 0, 0, 0.18); cursor: default;'
-
-    const frame = document.createElement('iframe')
-    frame.id = FRAME_ID
-    frame.title = 'Speaker Rate'
-    frame.style.cssText =
-      'position: fixed; right: 16px; bottom: 16px; ' +
-      'width: min(360px, calc(100vw - 32px)); height: min(560px, calc(100vh - 32px)); ' +
-      'border: 0; border-radius: 12px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.24); ' +
-      'background: #fff;'
-
-    frame.addEventListener('load', () => {
-      log('iframe load', { src: frame.src })
-    })
-
-    frame.addEventListener('error', (event) => {
-      error('iframe error', { src: frame.src, event })
-    })
-
-    shell.append(backdrop, frame)
-    document.documentElement.append(launcher, shell)
-
-    const closePanel = () => {
-      log('закрываю панель')
-      shell.hidden = true
-      launcher.hidden = false
-      frame.removeAttribute('src')
+    if (!document.querySelector(RATING_SELECTOR)) {
+      log('форма оценки ещё не в DOM — жду')
     }
 
-    const openPanel = () => {
-      const url = panelUrl()
-      log('открываю панель', url)
-      launcher.hidden = true
-      shell.hidden = false
-      frame.src = url
-    }
+    let scheduled = false
 
-    const togglePanel = () => {
-      if (shell.hidden) openPanel()
-      else closePanel()
-    }
+    const flush = () => {
+      scheduled = false
 
-    launcher.addEventListener('click', (event) => {
-      log('клик по ★')
-      event.preventDefault()
-      event.stopPropagation()
-      togglePanel()
-    })
-
-    backdrop.addEventListener('click', closePanel)
-
-    window.addEventListener('keydown', (event) => {
-      if (event.altKey !== HOTKEY.alt || event.shiftKey !== HOTKEY.shift || event.code !== HOTKEY.code) {
-        return
+      const rating = document.querySelector(RATING_SELECTOR)
+      if (rating instanceof Element) {
+        mountInlinePanel(rating)
       }
-      if (isEditableTarget(event.target)) {
-        log('hotkey проигнорирован: фокус в поле ввода')
-        return
-      }
+    }
 
-      log('hotkey Alt+Shift+R')
-      event.preventDefault()
-      event.stopPropagation()
-      togglePanel()
+    const schedule = () => {
+      if (scheduled) return
+      scheduled = true
+      requestAnimationFrame(flush)
+    }
+
+    const observer = new MutationObserver((records) => {
+      for (const record of records) {
+        if (record.target instanceof Element && isOwnElement(record.target)) continue
+
+        if (record.type === 'attributes' && record.target instanceof Element) {
+          if (record.target.matches(RATING_SELECTOR)) schedule()
+          continue
+        }
+
+        for (const node of record.addedNodes) {
+          if (node instanceof Element && isOwnElement(node)) continue
+          if (node instanceof Element && node.matches(RATING_SELECTOR)) {
+            schedule()
+            continue
+          }
+          if (node instanceof Element && node.querySelector(RATING_SELECTOR)) {
+            schedule()
+          }
+        }
+      }
     })
+
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['aria-label'],
+    })
+  }
+
+  const boot = () => {
+    log('boot')
+    loadHostBridge()
+    watchRatingForm()
 
     window.addEventListener('message', (event) => {
       if (event.origin !== PANEL_ORIGIN) return
       log('postMessage от панели', event.data)
     })
 
-    log('оболочка готова')
-  }
-
-  const boot = () => {
-    log('boot')
-    loadHostBridge()
-    mountShell()
+    log('готово')
   }
 
   if (document.body) {
     boot()
   } else {
-    log('жду document.body')
     const observer = new MutationObserver(() => {
       if (!document.body) return
       observer.disconnect()
