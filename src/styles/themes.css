@@ -1,4 +1,5 @@
-:root {
+:root,
+[data-speaker-rate-root] {
   color-scheme: light;
 
   --color-bg: #f0f2f1;
@@ -34,7 +35,8 @@
   --color-total-10-bg: #14532d;
 }
 
-:root[data-theme='dark'] {
+:root[data-theme='dark'],
+[data-speaker-rate-root][data-theme='dark'] {
   color-scheme: dark;
 
   --color-bg: #141a1e;
@@ -102,4 +104,30 @@ input {
 
 html[data-embed='true'] body {
   background: transparent;
+}
+
+[data-speaker-rate-root] {
+  box-sizing: border-box;
+  width: 100%;
+  color: var(--color-text);
+  background: transparent;
+  font-family:
+    Roboto,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+}
+
+[data-speaker-rate-root] *,
+[data-speaker-rate-root] *::before,
+[data-speaker-rate-root] *::after {
+  box-sizing: border-box;
+}
+
+[data-speaker-rate-root] button,
+[data-speaker-rate-root] input {
+  font: inherit;
 }
