@@ -1,6 +1,6 @@
 import { createApp, type App } from 'vue'
 
-import { enableWidgetMode } from '@/embed/mode'
+import { clearAppRoot, setAppRoot } from '@/embed/appRoot'
 import '@/styles/themes.css'
 
 import WidgetApp from './WidgetApp.vue'
@@ -26,13 +26,11 @@ const mountWidget = (container: HTMLElement, options: WidgetMountOptions = {}): 
   }
 
   container.dataset.speakerRateMounted = 'true'
-  container.dataset.speakerRateRoot = ''
+  setAppRoot(container, { external: true })
 
   if (options.theme) {
     container.dataset.theme = options.theme
   }
-
-  enableWidgetMode(container)
 
   const mountEl = document.createElement('div')
   container.append(mountEl)
@@ -46,8 +44,7 @@ const mountWidget = (container: HTMLElement, options: WidgetMountOptions = {}): 
     app.unmount()
     mountEl.remove()
     delete container.dataset.speakerRateMounted
-    delete container.dataset.speakerRateRoot
-    delete container.dataset.theme
+    clearAppRoot(container)
   }
 }
 

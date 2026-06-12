@@ -1,9 +1,18 @@
 import { createApp } from 'vue'
 
 import App from './App.vue'
-import { applyEmbedDocumentAttrs } from './embed/mode'
+import { isEmbedMode, setAppRoot } from './embed/mode'
 import './styles/themes.css'
 
-applyEmbedDocumentAttrs()
+const mountEl = document.getElementById('app')
+if (!mountEl) {
+  throw new Error('#app not found')
+}
 
-createApp(App).mount('#app')
+setAppRoot(mountEl)
+
+if (isEmbedMode) {
+  mountEl.dataset.embed = 'true'
+}
+
+createApp(App).mount(mountEl)

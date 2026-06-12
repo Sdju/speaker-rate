@@ -1,7 +1,7 @@
 import { usePreferredDark, useStorage } from '@vueuse/core'
 import { computed, watchEffect } from 'vue'
 
-import { getWidgetRoot, isWidgetMode } from '@/embed/mode'
+import { getAppRoot } from '@/embed/appRoot'
 
 const THEME_STORAGE_KEY = 'speaker-rate:theme'
 
@@ -24,15 +24,10 @@ export const useTheme = () => {
   })
 
   watchEffect(() => {
-    const theme = isDark.value ? 'dark' : 'light'
-    const widgetRoot = getWidgetRoot()
+    const root = getAppRoot()
+    if (!root) return
 
-    if (isWidgetMode() && widgetRoot) {
-      widgetRoot.dataset.theme = theme
-      return
-    }
-
-    document.documentElement.dataset.theme = theme
+    root.dataset.theme = isDark.value ? 'dark' : 'light'
   })
 
   const toggleTheme = () => {

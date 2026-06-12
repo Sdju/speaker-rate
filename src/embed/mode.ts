@@ -1,5 +1,3 @@
-let widgetRoot: HTMLElement | null = null
-
 const readEmbedMode = () => {
   const params = new URLSearchParams(window.location.search)
 
@@ -12,19 +10,7 @@ const readCompactMode = () => {
   return params.get('view') !== 'full'
 }
 
-export const enableWidgetMode = (root: HTMLElement) => {
-  widgetRoot = root
-}
-
-export const isWidgetMode = () => widgetRoot !== null
-
-export const getWidgetRoot = () => widgetRoot
+export { getAppRoot, isWidgetMode, setAppRoot } from '@/embed/appRoot'
 
 export const isEmbedMode = readEmbedMode()
 export const isCompactMode = readCompactMode()
-
-export const applyEmbedDocumentAttrs = () => {
-  if (!isEmbedMode) return
-
-  document.documentElement.dataset.embed = 'true'
-}
