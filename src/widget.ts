@@ -25,7 +25,6 @@ const mount = (container: HTMLElement) => {
     app.unmount()
     delete container.dataset.mounted
     container.removeAttribute('data-speaker-rate-app')
-    delete container.dataset.theme
   }
 }
 

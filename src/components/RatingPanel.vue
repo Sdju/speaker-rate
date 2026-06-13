@@ -39,7 +39,7 @@ if (props.jugru) {
         <p v-if="compact" class="panel-verdict">{{ scoreLabel }}</p>
       </div>
       <div class="panel-actions">
-        <ThemeToggle :compact="compact" />
+        <ThemeToggle v-if="!jugru" :compact="compact" />
         <div
           class="total-card"
           :style="{ background: `var(--color-total-${totalScore}-bg)` }"
@@ -108,6 +108,8 @@ if (props.jugru) {
 .rating-panel--compact.rating-panel--jugru {
   width: 100%;
   max-width: none;
+  border-color: var(--color-border);
+  background: transparent;
   box-shadow: none;
 }
 

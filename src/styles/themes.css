@@ -99,9 +99,47 @@
   background: var(--color-bg);
 }
 
+/* JugRu: палитра хоста, фон — как у полей ввода */
 [data-speaker-rate-app]:not(#app) {
+  --color-text: var(--foreground);
+  --color-text-muted: var(--muted-foreground);
+  --color-surface: color-mix(in oklab, var(--input) 30%, transparent);
+  --color-surface-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--primary);
+  --color-accent-hover: var(--primary);
+  --color-on-accent: var(--primary-foreground);
+  --shadow: none;
+
   width: 100%;
-  background: var(--color-surface);
+  background: color-mix(in oklab, var(--input) 30%, transparent);
   border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(23, 32, 38, 0.12);
+  box-shadow: none;
+  color: var(--color-text);
+  font-family: inherit;
+}
+
+html.dark [data-speaker-rate-app]:not(#app) {
+  color-scheme: dark;
+
+  --color-score-0-text: #ffb4b4;
+  --color-score-0-bg: rgba(122, 22, 22, 0.38);
+  --color-score-1-text: #ffc98a;
+  --color-score-1-bg: rgba(122, 58, 0, 0.34);
+  --color-score-2-text: #d8eb7a;
+  --color-score-2-bg: rgba(77, 95, 0, 0.32);
+  --color-score-3-text: #8ef0b4;
+  --color-score-3-bg: rgba(20, 83, 45, 0.36);
+
+  --color-total-0-bg: #9b3030;
+  --color-total-1-bg: #9b3828;
+  --color-total-2-bg: #9b4020;
+  --color-total-3-bg: #9b5018;
+  --color-total-4-bg: #9b6018;
+  --color-total-5-bg: #8f7010;
+  --color-total-6-bg: #7a8010;
+  --color-total-7-bg: #6b8018;
+  --color-total-8-bg: #4a7a28;
+  --color-total-9-bg: #327838;
+  --color-total-10-bg: #1a6b3a;
 }

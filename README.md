@@ -1,63 +1,57 @@
 # speaker-rate
 
-Панель оценки заявок на доклад на Vue 3 и Vite.
+Панель оценки заявок на доклад (Vue 3 + Vite).
 
-## Recommended IDE Setup
+- **Standalone:** [sdju.github.io/speaker-rate](https://sdju.github.io/speaker-rate/)
+- **Виджет на JugRu:** userscript для [beta.jugru.org](https://beta.jugru.org)
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Установка виджета (Tampermonkey)
 
-## Recommended Browser Setup
+Виджет встраивается на страницу голосования JugRu: панель появляется над формой «Оценка», оценки и комментарий синхронизируются с сайтом автоматически.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+1. Установите расширение [Tampermonkey](https://www.tampermonkey.net/) (Chrome, Firefox, Edge).
+2. Откройте Tampermonkey → **Создать новый скрипт**.
+3. Удалите содержимое редактора и вставьте код из файла [`userscripts/speaker-rate-loader.user.js`](userscripts/speaker-rate-loader.user.js) в этом репозитории.
+4. Сохраните скрипт (Ctrl+S).
+5. Откройте страницу голосования на `beta.jugru.org` и обновите её (лучше Ctrl+Shift+R).
 
-## Type Support for `.vue` Imports in TS
+Скрипт сам подгружает `widget.js` и `widget.css` с GitHub Pages — отдельно ничего ставить не нужно.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+**Обновление:** после изменений в репозитории скопируйте свежий `speaker-rate-loader.user.js` в Tampermonkey и сохраните снова.
 
-## Customize configuration
+## Как это устроено
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+```
+userscript → dock над [aria-label="Оценка"] → widget.js → RatingPanel → jugru/sync.ts
+```
 
-## Project Setup
+- Стили виджета наследуют палитру JugRu (`--foreground`, `--input`, …).
+- Тёмная тема — по `class="dark"` на `<html>`, переключатель темы в виджете скрыт.
+
+## Разработка
 
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
+npm run dev          # standalone-приложение
+npm run build        # dist/ + widget.js для Pages
 npm run lint
 ```
 
+### Сборки
+
+| Артефакт | Назначение |
+|---|---|
+| `dist/index.html` | Standalone на GitHub Pages |
+| `dist/widget.js`, `dist/widget.css` | Виджет для userscript |
+
 ## Deploy to GitHub Pages
 
-Проект настроен для деплоя в GitHub Pages из репозитория `speaker-rate`.
-
 1. Запушьте код в ветку `main`.
-2. В GitHub откройте `Settings` -> `Pages`.
-3. В `Build and deployment` выберите `Source: GitHub Actions`.
-4. Workflow `Deploy to GitHub Pages` соберет проект и опубликует содержимое `dist`.
+2. В GitHub: `Settings` → `Pages` → `Source: GitHub Actions`.
+3. Workflow **Deploy to GitHub Pages** публикует `dist/`.
 
-Адрес после публикации будет вида:
+Адрес: `https://sdju.github.io/speaker-rate/`
 
-```txt
-https://<github-username>.github.io/speaker-rate/
-```
+## IDE
+
+[VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar).
