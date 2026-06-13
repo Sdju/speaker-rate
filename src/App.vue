@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import RatingPanel from '@/components/RatingPanel.vue'
-import { isCompactMode, isEmbedMode } from '@/embed'
+
+const compact = new URLSearchParams(location.search).get('view') !== 'full'
 </script>
 
 <template>
-  <main
-    class="page-shell"
-    :class="{
-      'page-shell--compact': isCompactMode,
-      'page-shell--embed': isEmbedMode,
-    }"
-  >
-    <RatingPanel :compact="isCompactMode" :embed="isEmbedMode" />
+  <main class="page-shell" :class="{ 'page-shell--compact': compact }">
+    <RatingPanel :compact="compact" />
   </main>
 </template>
 
@@ -27,10 +22,5 @@ import { isCompactMode, isEmbedMode } from '@/embed'
   min-height: auto;
   padding: 0;
   place-items: stretch;
-}
-
-.page-shell--embed {
-  min-height: auto;
-  padding: 0;
 }
 </style>

@@ -1,7 +1,7 @@
 import { usePreferredDark, useStorage } from '@vueuse/core'
 import { computed, watchEffect } from 'vue'
 
-import { getAppRoot } from '@/embed/appRoot'
+import { getAppRoot } from '@/appRoot'
 
 const THEME_STORAGE_KEY = 'speaker-rate:theme'
 
@@ -24,18 +24,12 @@ export const useTheme = () => {
   })
 
   watchEffect(() => {
-    const root = getAppRoot()
-    if (!root) return
-
-    root.dataset.theme = isDark.value ? 'dark' : 'light'
+    getAppRoot()?.setAttribute('data-theme', isDark.value ? 'dark' : 'light')
   })
 
   const toggleTheme = () => {
     isDark.value = !isDark.value
   }
 
-  return {
-    isDark,
-    toggleTheme,
-  }
+  return { isDark, toggleTheme }
 }

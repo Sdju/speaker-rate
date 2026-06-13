@@ -99,12 +99,9 @@
   background: var(--color-bg);
 }
 
-#app[data-speaker-rate-app][data-embed] {
-  min-height: auto;
-  background: transparent;
-}
-
 [data-speaker-rate-app]:not(#app) {
   width: 100%;
-  background: transparent;
+  background: var(--color-surface);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(23, 32, 38, 0.12);
 }

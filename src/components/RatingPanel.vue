@@ -1,33 +1,26 @@
 <script setup lang="ts">
-import { toRef } from 'vue'
-
 import RatingCriterion from '@/components/RatingCriterion.vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
-import { useWidgetBridge } from '@/embed/useWidgetBridge'
+import { useJugruSync } from '@/composables/useJugruSync'
 import { useTalkRating } from '@/composables/useTalkRating'
 import { criteria } from '@/config/ratingCriteria'
 
 const props = withDefaults(
   defineProps<{
     compact?: boolean
-    embed?: boolean
+    jugru?: boolean
   }>(),
   {
     compact: true,
-    embed: false,
+    jugru: false,
   },
 )
 
-const { copyResults, copyStatus, scores, scoreLabel, totalScore, resultsText } = useTalkRating({
-  embed: props.embed,
-})
+const { copyResults, copyStatus, scores, scoreLabel, totalScore, resultsText } = useTalkRating()
 
-useWidgetBridge({
-  enabled: toRef(props, 'embed'),
-  totalScore,
-  resultsText,
-  scoreLabel,
-})
+if (props.jugru) {
+  useJugruSync(totalScore, resultsText)
+}
 </script>
 
 <template>
@@ -35,7 +28,7 @@ useWidgetBridge({
     class="rating-panel"
     :class="{
       'rating-panel--compact': compact,
-      'rating-panel--embed': embed,
+      'rating-panel--jugru': jugru,
     }"
     aria-labelledby="rating-title"
   >
@@ -69,7 +62,7 @@ useWidgetBridge({
       />
     </div>
 
-    <footer v-if="!embed" class="result">
+    <footer v-if="!jugru" class="result">
       <template v-if="compact">
         <button class="copy-button" type="button" @click="copyResults">Копировать</button>
         <span aria-live="polite">{{ copyStatus }}</span>
@@ -112,7 +105,7 @@ useWidgetBridge({
   box-shadow: 0 8px 24px rgba(23, 32, 38, 0.12);
 }
 
-.rating-panel--compact.rating-panel--embed {
+.rating-panel--compact.rating-panel--jugru {
   width: 100%;
   max-width: none;
   box-shadow: none;

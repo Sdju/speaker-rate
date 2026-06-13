@@ -1,6 +1,0 @@
-export { APP_ROOT_ATTR, clearAppRoot, getAppRoot, setAppRoot } from '@/embed/appRoot'
-export { isCompactMode, isEmbedMode, isWidgetMode } from '@/embed/mode'
-export { EMBED_MESSAGE_SOURCE, isEmbedSyncMessage } from '@/embed/protocol'
-export type { EmbedSyncMessage } from '@/embed/protocol'
-export { applyJugruHostSync } from '@/embed/host/jugru'
-export { useWidgetBridge } from '@/embed/useWidgetBridge'

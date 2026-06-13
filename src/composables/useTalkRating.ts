@@ -36,11 +36,7 @@ export const formatResultsText = (
   scoreLabel: string,
 ) => {
   const criteriaResults = criteria
-    .map((criterion) => {
-      const score = scores[criterion.id]
-
-      return `${criterion.title}: ${score}/${MAX_CRITERION_SCORE}.`
-    })
+    .map((criterion) => `${criterion.title}: ${scores[criterion.id]}/${MAX_CRITERION_SCORE}.`)
     .join('\n')
 
   return [
@@ -52,10 +48,8 @@ export const formatResultsText = (
   ].join('\n')
 }
 
-export const useTalkRating = (options?: { embed?: boolean }) => {
-  const embed = options?.embed ?? false
+export const useTalkRating = () => {
   const copyError = ref(false)
-
   const scores = reactive<Record<CriterionId, CriterionScore>>({ ...defaultScores })
 
   const totalScore = computed(() => {
@@ -99,12 +93,5 @@ export const useTalkRating = (options?: { embed?: boolean }) => {
     }
   }
 
-  return {
-    copyResults: embed ? undefined : copyResults,
-    copyStatus: embed ? undefined : copyStatus,
-    resultsText,
-    scores,
-    scoreLabel,
-    totalScore,
-  }
+  return { copyResults, copyStatus, resultsText, scores, scoreLabel, totalScore }
 }

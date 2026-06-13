@@ -23,7 +23,7 @@ export default defineConfig({
     emptyOutDir: false,
     cssCodeSplit: false,
     lib: {
-      entry: resolve(__dirname, 'src/embed/widget/entry.ts'),
+      entry: resolve(__dirname, 'src/widget.ts'),
       name: 'SpeakerRateWidget',
       formats: ['iife'],
       fileName: () => 'widget.js',
