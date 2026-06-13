@@ -74,7 +74,7 @@ const anchorName = `--info-tooltip-${useId()}`
   border: 1px solid var(--color-border);
   border-radius: 6px;
   color: var(--color-text);
-  background: var(--color-surface);
+  background: var(--background, var(--color-surface));
   box-shadow: var(--shadow);
   font-size: 0.78rem;
   font-weight: 400;
